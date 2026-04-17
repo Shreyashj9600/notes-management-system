@@ -15,6 +15,7 @@ function App() {
         <Route path="/edit/:id" element={<EditNote />} />
         <Route path="/note/:id" element={<ViewNote />} />
       </Routes>
+      <ToastContainer position="top-right" autoClose={2000} />
     </BrowserRouter>
   );
 }

@@ -19,13 +19,21 @@ function EditNote() {
         setContent(res.data.content);
     };
 
-    const handleUpdate = async (e) => {
-        e.preventDefault();
+   const handleUpdate = async (e) => {
+    e.preventDefault();
 
+    try {
         await API.put(`/${id}`, { title, content });
-        navigate("/");
-    };
 
+        // ✅ SEND MESSAGE TO HOME
+        navigate("/", {
+            state: { message: "Note updated successfully" }
+        });
+
+    } catch (error) {
+        console.log(error);
+    }
+};
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
             <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-lg">

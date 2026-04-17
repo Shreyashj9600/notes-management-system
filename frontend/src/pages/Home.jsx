@@ -26,15 +26,16 @@ function Home() {
         fetchNotes();
     }, []);
 
-    // ✅ SHOW TOAST WHEN COMING FROM CREATE / EDIT PAGE
     useEffect(() => {
-        if (location.state?.message) {
-            toast.success(location.state.message);
+        const message = location.state?.message;
 
-            // clear state so it doesn't repeat
-            window.history.replaceState({}, document.title);
+        if (message) {
+            toast.success(message);
+
+            // clear state safely
+            navigate(location.pathname, { replace: true, state: {} });
         }
-    }, [location]);
+    }, []);
 
     // DELETE NOTE
     const deleteNote = async (id) => {

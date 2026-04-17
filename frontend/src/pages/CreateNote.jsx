@@ -1,6 +1,7 @@
 import { useState } from "react";
 import API from "../services/api";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function CreateNote() {
     const [title, setTitle] = useState("");
@@ -31,8 +32,14 @@ function CreateNote() {
 
         if (!validate()) return;
 
-        await API.post("/", { title, content });
-        navigate("/");
+        try {
+            await API.post("/", { title, content });
+
+            toast.success("Note created successfully"); 
+            navigate("/");
+        } catch (error) {
+            toast.error("Failed to create note");
+        }
     };
 
     return (
