@@ -18,7 +18,7 @@ connectDB();
 // routes
 app.get('/', (req, res) => {
     res.json({
-        status: 'success',
+        status: 'success msg',
         message: "notes-management-system is running",
     })
 })
