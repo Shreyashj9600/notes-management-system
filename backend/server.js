@@ -13,7 +13,15 @@ app.use(express.json());
 // DB connection
 connectDB();
 
+
+
 // routes
+app.get('/', (req, res) => {
+    res.json({
+        status: 'success',
+        message: "notes-management-system is running",
+    })
+})
 app.use("/api/notes", require("./routes/noteRoutes"));
 
 const PORT = process.env.PORT || 5000;
