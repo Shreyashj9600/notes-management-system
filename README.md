@@ -5,6 +5,11 @@ Users can create, edit, delete, search, and manage their notes efficiently with 
 
 ---
 
+## 🌐 Live Demo
+
+🚧 Frontend:https://notesmanagementsystem.netlify.app/  
+🚧 Backend: https://notes-management-system-maoxy77gl-shreyashj9600s-projects.vercel.app/
+
 ## 🚀 Features
 
 - ✍️ Create Notes
