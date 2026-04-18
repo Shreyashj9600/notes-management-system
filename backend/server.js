@@ -7,7 +7,15 @@ const connectDB = require("./config/db");
 const app = express();
 
 // middleware
-app.use(cors());
+app.use(
+    cors({
+        origin: [
+            "http://localhost:5173",
+            "https://notesmanagementsystem.netlify.app",
+        ],
+        credentials: true,
+    })
+);
 app.use(express.json());
 
 // DB connection
