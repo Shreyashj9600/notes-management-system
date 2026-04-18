@@ -9,16 +9,16 @@ import { toast } from "react-toastify";
 function Home() {
     const [notes, setNotes] = useState([]);
     const [search, setSearch] = useState("");
+    const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
     const location = useLocation();
 
-    // ================= FETCH NOTES =================
     const fetchNotes = async (query = "") => {
         try {
-            const res = await API.get(`/notes?search=${query}`);
+            setLoading(true);
 
-            console.log("API RESPONSE:", res.data);
+            const res = await API.get(`/notes?search=${query}`);
 
             const data = res.data;
 
@@ -32,17 +32,16 @@ function Home() {
 
         } catch (error) {
             console.log(error);
-            toast.error("Failed to load notes");
             setNotes([]);
+        } finally {
+            setLoading(false);
         }
     };
 
-    // ================= INITIAL LOAD =================
     useEffect(() => {
         fetchNotes();
     }, []);
 
-    // ================= SUCCESS MESSAGE =================
     useEffect(() => {
         const message = location.state?.message;
 
@@ -52,7 +51,6 @@ function Home() {
         }
     }, [location, navigate]);
 
-    // ================= DELETE NOTE =================
     const deleteNote = async (id) => {
         if (!window.confirm("Are you sure you want to delete this note?")) return;
 
@@ -101,7 +99,15 @@ function Home() {
             </div>
 
             {/* EMPTY STATE */}
-            {notes.length === 0 ? (
+            {loading ? (
+                <div className="flex flex-col items-center justify-center mt-20">
+                    <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+
+                    <p className="mt-3 text-gray-600 text-sm">
+                        Loading your notes...
+                    </p>
+                </div>
+            ) : notes.length === 0 ? (
                 <p className="text-center text-gray-500 mt-10">
                     No notes found
                 </p>
@@ -124,8 +130,8 @@ function Home() {
                                 {note.content}
                             </p>
 
-                            {/* CREATED + UPDATED TIME */}
-                            <div className="text-xs text-gray-500 mb-3 border-t border-b  py-5 space-y-1 flex justify-between">
+                            {/* TIME */}
+                            <div className="text-xs text-gray-500 mb-3 border-t border-b py-5 flex justify-between">
                                 <p>
                                     Created:{" "}
                                     {note.createdAt
@@ -169,6 +175,7 @@ function Home() {
                                 </button>
 
                             </div>
+
                         </div>
                     ))}
 

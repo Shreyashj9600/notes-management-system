@@ -7,14 +7,14 @@ Users can create, edit, delete, search, and manage their notes efficiently with 
 
 ## 🚀 Features
 
-* ✍️ Create Notes
-* 📖 View Notes
-* ✏️ Edit Notes
-* 🗑️ Delete Notes
-* 🔍 Search Notes
-* 🔔 Toast Notifications
-* 📱 Responsive UI
-* ⚡ Fast and lightweight
+- ✍️ Create Notes
+- 📖 View Notes
+- ✏️ Edit Notes
+- 🗑️ Delete Notes
+- 🔍 Search Notes
+- 🔔 Toast Notifications
+- 📱 Responsive UI
+- ⚡ Fast and lightweight
 
 ---
 
@@ -22,18 +22,18 @@ Users can create, edit, delete, search, and manage their notes efficiently with 
 
 ### Frontend
 
-* React.js
-* React Router
-* Tailwind CSS
-* Axios
-* React Toastify
+- React.js
+- React Router
+- Tailwind CSS
+- Axios
+- React Toastify
 
 ### Backend
 
-* Node.js
-* Express.js
-* MongoDB
-* Mongoose
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
 
 ---
 
@@ -48,6 +48,7 @@ client/
  │   └── App.jsx
 
 server/
+ ├── config/
  ├── models/
  ├── routes/
  ├── controllers/
@@ -61,7 +62,7 @@ server/
 ### 1️⃣ Clone the repository
 
 ```
-git clone https://github.com/your-username/notes-manager.git
+git clone https://github.com/Shreyashj9600/notes-management-system
 cd notes-manager
 ```
 
@@ -124,28 +125,15 @@ npm run dev
 
 ## 📸 Screenshots
 
-(Add screenshots here)
+ ![alt text](image.png)
 
 ---
 
 ## 🌐 Deployment
 
-Frontend: Vercel
-Backend: Render / Railway
+Frontend: netlify
+Backend: Render 
 Database: MongoDB Atlas
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome!
-Feel free to fork this repository and submit a pull request.
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License.
 
 ---
 
@@ -153,9 +141,7 @@ This project is licensed under the MIT License.
 
 **Shreyash Jadhav**
 
-* GitHub: https://github.com/your-username
-* LinkedIn: https://linkedin.com/in/your-profile
+- GitHub: https://github.com/Shreyashj9600/notes-management-system
 
 ---
-
-⭐ If you like this project, give it a star!
+ 

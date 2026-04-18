@@ -24,12 +24,15 @@ function ViewNote() {
 
     useEffect(() => {
         fetchNote();
-    }, [id]); // ✅ FIXED dependency
+    }, [id]);
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center text-gray-500">
-                Loading note...
+            <div className="min-h-screen flex flex-col items-center justify-center text-gray-500">
+ 
+                <div className="w-12 h-12 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
+
+                <p className="mt-4 text-sm font-medium">Loading note...</p>
             </div>
         );
     }

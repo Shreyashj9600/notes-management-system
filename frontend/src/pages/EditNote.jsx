@@ -25,7 +25,6 @@ function EditNote() {
     try {
         await API.put(`/notes/${id}`, { title, content });
 
-        // ✅ SEND MESSAGE TO HOME
         navigate("/", {
             state: { message: "Note updated successfully" }
         });
