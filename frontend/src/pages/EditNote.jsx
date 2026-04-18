@@ -14,7 +14,7 @@ function EditNote() {
     }, []);
 
     const loadNote = async () => {
-        const res = await API.get(`/${id}`);
+        const res = await API.get(`/api/notes/${id}`);
         setTitle(res.data.title);
         setContent(res.data.content);
     };
@@ -23,7 +23,7 @@ function EditNote() {
     e.preventDefault();
 
     try {
-        await API.put(`/${id}`, { title, content });
+        await API.put(`/api/notes/${id}`, { title, content });
 
         // ✅ SEND MESSAGE TO HOME
         navigate("/", {

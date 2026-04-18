@@ -9,62 +9,75 @@ import { toast } from "react-toastify";
 function Home() {
     const [notes, setNotes] = useState([]);
     const [search, setSearch] = useState("");
+
     const navigate = useNavigate();
     const location = useLocation();
 
-    // FETCH NOTES
+    // ================= FETCH NOTES =================
     const fetchNotes = async (query = "") => {
         try {
-            const res = await API.get(`?search=${query}`);
-            setNotes(res.data);
+            const res = await API.get(`/api/notes?search=${query}`);
+
+            console.log("API RESPONSE:", res.data);
+
+            const data = res.data;
+
+            if (Array.isArray(data)) {
+                setNotes(data);
+            } else if (Array.isArray(data?.notes)) {
+                setNotes(data.notes);
+            } else {
+                setNotes([]);
+            }
+
         } catch (error) {
+            console.log(error);
             toast.error("Failed to load notes");
+            setNotes([]);
         }
     };
 
+    // ================= INITIAL LOAD =================
     useEffect(() => {
         fetchNotes();
     }, []);
 
+    // ================= SUCCESS MESSAGE =================
     useEffect(() => {
         const message = location.state?.message;
 
         if (message) {
             toast.success(message);
-
-            // clear state safely
             navigate(location.pathname, { replace: true, state: {} });
         }
-    }, []);
+    }, [location, navigate]);
 
-    // DELETE NOTE
+    // ================= DELETE NOTE =================
     const deleteNote = async (id) => {
-        const ok = window.confirm("Are you sure you want to delete this note?");
-        if (!ok) return;
+        if (!window.confirm("Are you sure you want to delete this note?")) return;
 
         try {
-            await API.delete(`/${id}`);
+            await API.delete(`/api/notes/${id}`);
             toast.success("Note deleted successfully");
-            fetchNotes();
+            fetchNotes(search);
         } catch (error) {
             toast.error("Failed to delete note");
         }
     };
 
     return (
-        <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-200 p-6">
+        <div className="min-h-screen bg-gray-100 p-6">
 
             {/* HEADER */}
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
-
-                <h1 className="text-4xl font-extrabold text-gray-800 flex items-center gap-3">
-                    <FaRegStickyNote className="text-blue-600" />
+            <div className="flex justify-between items-center mb-6">
+                <h1 className="text-3xl font-bold flex items-center gap-2">
+                    <FaRegStickyNote />
                     Notes Manager
                 </h1>
 
                 <button
                     onClick={() => navigate("/create")}
-                    className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl shadow-md transition"
+                    className="bg-blue-600 text-white px-4 py-2 rounded flex items-center gap-2"
                 >
                     <FiPlus />
                     New Note
@@ -72,53 +85,68 @@ function Home() {
             </div>
 
             {/* SEARCH */}
-            <div className="relative mb-8">
-                <FiSearch className="absolute top-4 left-4 text-gray-400" />
+            <div className="mb-6 relative">
+                <FiSearch className="absolute top-3 left-3 text-gray-400" />
 
                 <input
-                    type="text"
+                    className="w-full pl-10 p-3 border rounded"
                     placeholder="Search notes..."
-                    className="w-full pl-10 p-4 rounded-2xl border border-gray-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
                     value={search}
                     onChange={(e) => {
-                        setSearch(e.target.value);
-                        fetchNotes(e.target.value);
+                        const value = e.target.value;
+                        setSearch(value);
+                        fetchNotes(value);
                     }}
                 />
             </div>
 
             {/* EMPTY STATE */}
             {notes.length === 0 ? (
-                <div className="text-center mt-20 text-gray-500">
-                    <p className="text-lg">No notes found</p>
-                </div>
+                <p className="text-center text-gray-500 mt-10">
+                    No notes found
+                </p>
             ) : (
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid md:grid-cols-3 gap-4">
 
                     {notes.map((note) => (
                         <div
                             key={note._id}
-                            className="bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 p-5 flex flex-col justify-between"
+                            className="bg-white p-4 rounded shadow flex flex-col justify-between"
                         >
 
-                            <h2 className="text-lg font-bold text-gray-900 mb-2 line-clamp-1">
+                            {/* TITLE */}
+                            <h2 className="font-bold text-lg mb-2">
                                 {note.title}
                             </h2>
 
-                            <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                            {/* CONTENT */}
+                            <p className="text-gray-600 mb-3">
                                 {note.content}
                             </p>
 
-                            <div className="text-xs text-gray-500 mb-4 space-y-1 border-t pt-3">
-                                <p>Created: {new Date(note.createdAt).toLocaleDateString()}</p>
-                                <p>Updated: {new Date(note.updatedAt).toLocaleDateString()}</p>
+                            {/* CREATED + UPDATED TIME */}
+                            <div className="text-xs text-gray-500 mb-3 border-t border-b  py-5 space-y-1 flex justify-between">
+                                <p>
+                                    Created:{" "}
+                                    {note.createdAt
+                                        ? new Date(note.createdAt).toLocaleString()
+                                        : "N/A"}
+                                </p>
+
+                                <p>
+                                    Updated:{" "}
+                                    {note.updatedAt
+                                        ? new Date(note.updatedAt).toLocaleString()
+                                        : "N/A"}
+                                </p>
                             </div>
 
-                            <div className="flex items-center justify-between gap-2 pt-3 border-t">
+                            {/* ACTIONS */}
+                            <div className="flex justify-between">
 
                                 <button
                                     onClick={() => navigate(`/note/${note._id}`)}
-                                    className="flex items-center gap-1 flex-1 py-2 rounded-lg text-green-600 hover:bg-green-50 text-sm font-medium"
+                                    className="text-green-600 flex items-center gap-1"
                                 >
                                     <FiEye />
                                     View
@@ -126,7 +154,7 @@ function Home() {
 
                                 <button
                                     onClick={() => navigate(`/edit/${note._id}`)}
-                                    className="flex items-center gap-1 flex-1 py-2 rounded-lg text-blue-600 hover:bg-blue-50 text-sm font-medium"
+                                    className="text-blue-600 flex items-center gap-1"
                                 >
                                     <FiEdit3 />
                                     Edit
@@ -134,7 +162,7 @@ function Home() {
 
                                 <button
                                     onClick={() => deleteNote(note._id)}
-                                    className="flex items-center gap-1 flex-1 py-2 rounded-lg text-red-600 hover:bg-red-50 text-sm font-medium"
+                                    className="text-red-600 flex items-center gap-1"
                                 >
                                     <FiTrash2 />
                                     Delete

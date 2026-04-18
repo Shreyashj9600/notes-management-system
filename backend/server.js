@@ -11,15 +11,19 @@ app.use(
     cors({
         origin: [
             "http://localhost:5173",
-            "https://notesmanagementsystem.netlify.app",
+            "https://notesmanagementsystem.netlify.app"
         ],
         credentials: true,
     })
 );
+
+app.options("*", cors());
+
+
 app.use(express.json());
 
 // DB connection
-connectDB();
+connectDB(); 
 
 
 
@@ -34,6 +38,9 @@ app.use("/api/notes", require("./routes/noteRoutes"));
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`Server running on port ${PORT}`);
+// });
+
+
+module.exports = app;

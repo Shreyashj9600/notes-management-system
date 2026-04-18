@@ -33,7 +33,7 @@ function CreateNote() {
         if (!validate()) return;
 
         try {
-            await API.post("/", { title, content });
+            await API.post("/api/notes", { title, content });
 
             toast.success("Note created successfully"); 
             navigate("/");
