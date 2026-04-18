@@ -16,7 +16,7 @@ function Home() {
     // ================= FETCH NOTES =================
     const fetchNotes = async (query = "") => {
         try {
-            const res = await API.get(`/api/notes?search=${query}`);
+            const res = await API.get(`/notes?search=${query}`);
 
             console.log("API RESPONSE:", res.data);
 
@@ -57,7 +57,7 @@ function Home() {
         if (!window.confirm("Are you sure you want to delete this note?")) return;
 
         try {
-            await API.delete(`/api/notes/${id}`);
+            await API.delete(`/notes/${id}`);
             toast.success("Note deleted successfully");
             fetchNotes(search);
         } catch (error) {

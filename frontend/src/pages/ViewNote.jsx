@@ -13,7 +13,7 @@ function ViewNote() {
     const fetchNote = async () => {
         try {
             setLoading(true);
-            const res = await API.get(`/api/notes/${id}`);
+            const res = await API.get(`/notes/${id}`);
             setNote(res.data);
         } catch (error) {
             console.log(error);
